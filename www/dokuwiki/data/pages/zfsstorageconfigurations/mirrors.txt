@@ -1,0 +1,162 @@
+===== Database Storage with Mirrors =====
+
+A fully redundant type of pool is the mirror, in which each VDEV in the pool has an exact copy running. Another way to think of this is that each VDEV has one or more copies of itself in the pool. Mirrors have excellent read performance since different parts of the same data can be read from all VDEVS with the requested data, however write performance is not as stellar. This is because the write operation is finished when the slowest device of all mirrored VDEVS has finished its write.
+
+Mirrors at best reduce the usable storage space to half the capacity you've provided. While you might see the disk cost in running a mirror as excessive, it's easy to imagine situations where the importance of the data justifies the risk tolerance of doubling your disks up in a ZFS mirror. Databases are a good use case candidate for the redundancy features of ZFS. Mirrors are a good place to start with databases since they rank highest in a list of redundancy levels with the least performance impact, with increasing RAID-Z levels ranking lower and lower. We will discuss these in more detail later.
+
+This section will also deal with and test hot spare functionality in ZoL, since we now are working with fault tolerant configurations.
+
+==== Creating a ZFS Mirror ====
+The //zpool create [pool] mirror [devices]// command will create a pool with a mirrored VDEV containing the specified devices. Consider:
+<code>
+# zpool create anaheim -o ashift=12 mirror /dev/disk/by-partlabel/zfs{0..1}
+</code>
+This creates a new pool named anaheim  that contains zfs0 and zfs1, each mirroring one another. If one fails, the pool is still alive and available. You can add arbitrary devices behind each //mirror// VDEV, and any data written to that dataset will be written to all disks.
+
+To view detailed information about the pool we've just created, run:
+<code>
+# zpool list -v anaheim
+NAME   SIZE  ALLOC   FREE  EXPANDSZ   FRAG    CAP  DEDUP  HEALTH  ALTROOT
+anaheim  17.6G    64K  17.6G         -     0%     0%  1.00x  ONLINE  -
+  mirror  17.6G    64K  17.6G         -     0%     0%
+    zfs0      -      -      -         -      -      -
+    zfs1      -      -      -         -      -      -
+</code>
+
+We can see that we have about 17.6GB available across two disks in this mirror. That's the net (actual) disk capacity of our 20GB device minus the ZFS overhead, which as you can see is somewhat significant compared to other filesystems.
+
+Let's expand this pool by adding another mirror VDEV.
+<code>
+# zpool add anaheim mirror /dev/disk/by-partlabel/zfs{2..3}
+# zpool list -v anaheim
+NAME   SIZE  ALLOC   FREE  EXPANDSZ   FRAG    CAP  DEDUP  HEALTH  ALTROOT
+anaheim  35.2G   106K  35.2G         -     0%     0%  1.00x  ONLINE  -
+  mirror  17.6G  99.5K  17.6G         -     0%     0%
+    zfs0      -      -      -         -      -      -
+    zfs1      -      -      -         -      -      -
+  mirror  17.6G  6.50K  17.6G         -     0%     0%
+    zfs2      -      -      -         -      -      -
+    zfs3      -      -      -         -      -      -
+</code>
+
+You now should see that another mirror VDEV was added to the pool //anaheim//, showing a total available storage of 35.2GB. We could have created this configuration at the beginning with our //zpool create// command:
+<code>
+# zpool create anaheim mirror /dev/disk/by-partlabel/zfs{0..1} \
+> mirror /dev/disk/by-partlabel/zfs{2..3}
+</code>
+
+...but now you can see how simple it is to expand storage pools with ZFS.
+
+==== Mountpoints of storage pools ====
+
+When you run a //zpool create//, the pool is by default mounted at the root of your system. Creating the above pool mounted it at <code>/anaheim</code>
+
+If you'd like the mountpoint to be elsewhere, specify it in your //zpool create// command with:
+<code>
+# zpool create [-m mountpoint]
+</code>
+
+We will allow ZFS to use its default in this document to keep our commands more readable.
+
+ZFS's design rolled up many traditionally separated storage administration commands such as mount(8), umount(8), df(8), and so on into zfs(8) and zpool(8). Since // /anaheim // is the root of our dataset, we can //ls// to it and treat ///anaheim// as a local directory (which is naive), or we can use more features of ZFS to administer it as a dataset. Ideally, we'd like to use the //zfs create// command to build our storage structure since this will allow us to manage subdirectories with the powerful ZFS features available to us.
+
+To create another dataset called production that is beneath our root dataset, //anaheim//, we'll use the //zfs// command. Run:
+<code>
+# zfs create anaheim/production
+</code>
+//Anaheim// is our root dataset, and //production// is another dataset within //anaheim//. This allows us to use features like ZFS snapshots or exports on //anaheim// and //production// separately. In complex backup configurations, it is often the case that backup levels operate on different datasets, which this enables.
+
+To see that these two datasets have different mountpoints, we can run a //zfs list//.
+
+<code>
+# zfs list
+NAME                 USED  AVAIL  REFER  MOUNTPOINT
+anaheim               83K  34.1G    19K  /anaheim
+anaheim/production    19K  34.1G    19K  /anaheim/production
+</code>
+
+==== Hot Spares ====
+
+ZFS allows us to keep hot spare disks ready to replace faulted devices. In these cases, the pool will run in a degraded state until the faulted disk is replaced. Notable about this is the fact that the pool stays up and working... with redundancy in place, ZFS does its best to keep the storage pool available and up. ZFS on Solaris has the ability to automatically replace a faulted device with a hot spare, but several years ago it was reported that this feature was not working in ZoL. We should test this to see if it's still the case.
+
+Add a spare to any pool with the //zpool add// command:
+<code>
+zpool add [-fn] [-o property=value] pool vdev ...
+</code>
+
+We'll add //zfs12// to //anaheim// as a spare.
+
+<code>
+# zpool add anaheim spare /dev/disk/by-partlabel/zfs12
+# zpool status
+  pool: anaheim
+ state: ONLINE
+  scan: none requested
+config:
+
+	NAME        STATE     READ WRITE CKSUM
+	anaheim     ONLINE       0     0     0
+	  mirror-0  ONLINE       0     0     0
+	    zfs0    ONLINE       0     0     0
+	    zfs1    ONLINE       0     0     0
+	  mirror-1  ONLINE       0     0     0
+	    zfs2    ONLINE       0     0     0
+	    zfs3    ONLINE       0     0     0
+	spares
+	  zfs12     AVAIL
+</code>
+
+Spares are listed with your //zpool status// output.
+
+Let's simulate some load on this pool, then intentionally fail one of the drives to see how replacing with a hot spare should work. Then we'll roll back the VM to a previous state to try the same thing again with autoreplace enabled.
+
+We can put the pool under some write stress by creating a large file to store in it. Run it in a background shell as it is slow:
+<code>
+# cd anaheim/production
+# tar -cf usr.tar /usr  &
+</code>
+
+Alternatively you can put some stress on the pool creating a random file with the //dd// command. Again, background this task as it can take some time:
+<code>
+# cd /anaheim/production
+# dd if=/dev/urandom of=content.file bs=1024 count=2000000 &
+</code>
+
+=== Manually Swapping Spares ===
+The //anaheim// storage pool should have some data on it at this point. Make sure you have a either a running or stopped VM snapshot taken before we proceed. We should now detach one of the virtual disks from the VM from the VM host machine. The Windows CMD command we'll use in this example is:
+<code>
+> vboxmanage storageattach "kero02" --storagectl "SAS" --port 1 --device --medium none
+</code>
+
+...where //kero02// is our VM, our storage controller is named //SAS//, and the disk we want to pull is on port 1, which in our case is //zfs1//.
+
+When we start our VM up and check //zpool status//, we find that the pool is available serving our files, but is running in a degraded state.
+
+<code>
+# zpool status
+  pool: anaheim
+ state: DEGRADED
+status: One or more devices could not be used because the label is missing or
+	invalid.  Sufficient replicas exist for the pool to continue
+	functioning in a degraded state.
+action: Replace the device using 'zpool replace'.
+   see: http://zfsonlinux.org/msg/ZFS-8000-4J
+  scan: none requested
+config:
+
+	NAME                     STATE     READ WRITE CKSUM
+	anaheim                  DEGRADED     0     0     0
+	  mirror-0               DEGRADED     0     0     0
+	    zfs0                 ONLINE       0     0     0
+	    1163554861012541616  UNAVAIL      0     0     0  was /dev/disk/by-partlabel/zfs1
+	  mirror-1               ONLINE       0     0     0
+	    zfs2                 ONLINE       0     0     0
+	    zfs3                 ONLINE       0     0     0
+	spares
+	  zfs12                  AVAIL
+
+errors: No known data errors
+</code>
+
+We can still access the files in the pool. As an experiment, we can continue pulling drives to see how many failures this pool can survive.
+

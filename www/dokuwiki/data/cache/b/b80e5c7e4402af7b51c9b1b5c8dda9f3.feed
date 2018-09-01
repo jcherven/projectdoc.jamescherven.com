@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- generator="FeedCreator 1.7.2-ppt DokuWiki" -->
+<?xml-stylesheet href="http://jamescherven.com/lib/exe/css.php?s=feed" type="text/css"?>
+<rdf:RDF
+    xmlns="http://purl.org/rss/1.0/"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+    xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <channel rdf:about="http://jamescherven.com/feed.php">
+        <title>Storage, Backup, &amp; Recovery with ZFS on Linux</title>
+        <description></description>
+        <link>http://jamescherven.com/</link>
+        <image rdf:resource="http://jamescherven.com/lib/tpl/codowik-master/images/favicon.ico" />
+       <dc:date>2016-09-11T10:13:58-04:00</dc:date>
+        <items>
+            <rdf:Seq>
+                <rdf:li rdf:resource="http://jamescherven.com/doku.php?id=labenvironment&amp;rev=1473187843&amp;do=diff"/>
+                <rdf:li rdf:resource="http://jamescherven.com/doku.php?id=zfsstorageconfigurations:scratchdisks&amp;rev=1472090863&amp;do=diff"/>
+                <rdf:li rdf:resource="http://jamescherven.com/doku.php?id=zfsprimer&amp;rev=1472088381&amp;do=diff"/>
+                <rdf:li rdf:resource="http://jamescherven.com/doku.php?id=sidebar&amp;rev=1460583441&amp;do=diff"/>
+                <rdf:li rdf:resource="http://jamescherven.com/doku.php?id=zfsstorageconfigurations:mirrors&amp;rev=1460566733&amp;do=diff"/>
+                <rdf:li rdf:resource="http://jamescherven.com/doku.php?id=principlesofzfs&amp;rev=1460557297&amp;do=diff"/>
+                <rdf:li rdf:resource="http://jamescherven.com/doku.php?id=zfsperformance&amp;rev=1460552179&amp;do=diff"/>
+                <rdf:li rdf:resource="http://jamescherven.com/doku.php?id=zfsstorageconfigurations:raid-z_configurations&amp;rev=1460552127&amp;do=diff"/>
+                <rdf:li rdf:resource="http://jamescherven.com/doku.php?image=merkel_tree_l.png&amp;ns=&amp;rev=1457557408&amp;tab_details=history&amp;mediado=diff&amp;do=media"/>
+            </rdf:Seq>
+        </items>
+    </channel>
+    <image rdf:about="http://jamescherven.com/lib/tpl/codowik-master/images/favicon.ico">
+        <title>Storage, Backup, &amp; Recovery with ZFS on Linux</title>
+        <link>http://jamescherven.com/</link>
+        <url>http://jamescherven.com/lib/tpl/codowik-master/images/favicon.ico</url>
+    </image>
+    <item rdf:about="http://jamescherven.com/doku.php?id=labenvironment&amp;rev=1473187843&amp;do=diff">
+        <dc:format>text/html</dc:format>
+        <dc:date>2016-09-06T14:50:43-04:00</dc:date>
+        <dc:creator>jcherven</dc:creator>
+        <title>labenvironment - [Virtualbox Environment] </title>
+        <link>http://jamescherven.com/doku.php?id=labenvironment&amp;rev=1473187843&amp;do=diff</link>
+        <description>Our Lab Environment
+
+Virtualbox 5.0.14 will be used for this lab environment. Ample host machine resources are recommended. On the higher end of real world ZFS use cases where storage pools are very large and deduplication is enabled, a storage host with 64 GB of RAM can be considered a resource-constrained environment.</description>
+    </item>
+    <item rdf:about="http://jamescherven.com/doku.php?id=zfsstorageconfigurations:scratchdisks&amp;rev=1472090863&amp;do=diff">
+        <dc:format>text/html</dc:format>
+        <dc:date>2016-08-24T22:07:43-04:00</dc:date>
+        <dc:creator>jcherven</dc:creator>
+        <title>zfsstorageconfigurations:scratchdisks - [Scratch Disks with ZFS Stripe] </title>
+        <link>http://jamescherven.com/doku.php?id=zfsstorageconfigurations:scratchdisks&amp;rev=1472090863&amp;do=diff</link>
+        <description>Scratch Disks with ZFS Stripe
+
+One common use case for large network storage spaces are scratch disks for scientific and engineering calculations, for video editing, or other applications where large temporary storage spaces are needed. In these cases, redundancy is not important as the data has no long-term purpose; for these applications we are interested in the excellent read/write performance of ZFS striped arrays. With fast storage controllers and network interfaces, proper configuration ca…</description>
+    </item>
+    <item rdf:about="http://jamescherven.com/doku.php?id=zfsprimer&amp;rev=1472088381&amp;do=diff">
+        <dc:format>text/html</dc:format>
+        <dc:date>2016-08-24T21:26:21-04:00</dc:date>
+        <dc:creator>jcherven</dc:creator>
+        <title>zfsprimer - [ZFS On Linux] </title>
+        <link>http://jamescherven.com/doku.php?id=zfsprimer&amp;rev=1472088381&amp;do=diff</link>
+        <description>ZFS: A Primer
+
+Why ZFS?
+
+A typical storage administration scenario involves the sysadmin in numerous tasks that can be considered somewhat arcane when we step back and really look at what we're doing. The logical storage space is often coupled to some storage device's physical capacity in a direct way. That device has its own partition table and filesystem that must be mounted. If that device fails or suffers low level corruption, it needs to be unmounted, the disk replaced, the partition rewrit…</description>
+    </item>
+    <item rdf:about="http://jamescherven.com/doku.php?id=sidebar&amp;rev=1460583441&amp;do=diff">
+        <dc:format>text/html</dc:format>
+        <dc:date>2016-04-13T17:37:21-04:00</dc:date>
+        <dc:creator>jcherven</dc:creator>
+        <title>sidebar</title>
+        <link>http://jamescherven.com/doku.php?id=sidebar&amp;rev=1460583441&amp;do=diff</link>
+        <description>*  ZFS Primer
+	*  Our Lab Environment
+	*  Principles of ZFS
+	* ZFS Storage Configurations
+		*  Scratch Disks
+		*  Mirrors
+		*  RAID-Z Configurations
+
+	* ZFS Backup Configurations
+	* Comparing ZFS Performance
+
+----------
+
+	*  Meta 
+		*  Sidebar</description>
+    </item>
+    <item rdf:about="http://jamescherven.com/doku.php?id=zfsstorageconfigurations:mirrors&amp;rev=1460566733&amp;do=diff">
+        <dc:format>text/html</dc:format>
+        <dc:date>2016-04-13T12:58:53-04:00</dc:date>
+        <dc:creator>jcherven</dc:creator>
+        <title>zfsstorageconfigurations:mirrors - [Hot Spares] </title>
+        <link>http://jamescherven.com/doku.php?id=zfsstorageconfigurations:mirrors&amp;rev=1460566733&amp;do=diff</link>
+        <description>Database Storage with Mirrors
+
+A fully redundant type of pool is the mirror, in which each VDEV in the pool has an exact copy running. Another way to think of this is that each VDEV has one or more copies of itself in the pool. Mirrors have excellent read performance since different parts of the same data can be read from all VDEVS with the requested data, however write performance is not as stellar. This is because the write operation is finished when the slowest device of all mirrored VDEVS ha…</description>
+    </item>
+    <item rdf:about="http://jamescherven.com/doku.php?id=principlesofzfs&amp;rev=1460557297&amp;do=diff">
+        <dc:format>text/html</dc:format>
+        <dc:date>2016-04-13T10:21:37-04:00</dc:date>
+        <dc:creator>jcherven</dc:creator>
+        <title>principlesofzfs - [Additional Considerations] </title>
+        <link>http://jamescherven.com/doku.php?id=principlesofzfs&amp;rev=1460557297&amp;do=diff</link>
+        <description>Principles of ZFS
+
+From the zfs(8) manual page:
+
+	&quot; The  zfs command configures ZFS datasets within a ZFS storage pool, as described in zpool(8). A dataset is identified by a unique path within the ZFS namespace.&quot;
+
+It continues:
+
+	&quot; A  ZFS  storage  pool  is  a logical collection of devices that provide space for datasets. A storage pool is also the root of the ZFS file system hierarchy. The root of the pool can be accessed as a file system, such as mounting and unmounting,  taking  snapshots,  …</description>
+    </item>
+    <item rdf:about="http://jamescherven.com/doku.php?id=zfsperformance&amp;rev=1460552179&amp;do=diff">
+        <dc:format>text/html</dc:format>
+        <dc:date>2016-04-13T08:56:19-04:00</dc:date>
+        <dc:creator>jcherven</dc:creator>
+        <title>zfsperformance</title>
+        <link>http://jamescherven.com/doku.php?id=zfsperformance&amp;rev=1460552179&amp;do=diff</link>
+        <description>Comparing ZFS Performance
+
+This section contains some synthetic benchmarks for comparing performance between configurations and should give you guidance when preparing similar tests with your current storage configuration. While performance under actual workloads will vary greatly from those in our virtual environment, it should be possible to create a virtualized simulacra of your environment and configuration and compare them to a ZFS equivalent.</description>
+    </item>
+    <item rdf:about="http://jamescherven.com/doku.php?id=zfsstorageconfigurations:raid-z_configurations&amp;rev=1460552127&amp;do=diff">
+        <dc:format>text/html</dc:format>
+        <dc:date>2016-04-13T08:55:27-04:00</dc:date>
+        <dc:creator>jcherven</dc:creator>
+        <title>zfsstorageconfigurations:raid-z_configurations - created</title>
+        <link>http://jamescherven.com/doku.php?id=zfsstorageconfigurations:raid-z_configurations&amp;rev=1460552127&amp;do=diff</link>
+        <description>RAID-Z Configurations</description>
+    </item>
+    <item rdf:about="http://jamescherven.com/doku.php?image=merkel_tree_l.png&amp;ns=&amp;rev=1457557408&amp;tab_details=history&amp;mediado=diff&amp;do=media">
+        <dc:format>text/html</dc:format>
+        <dc:date>2016-03-09T16:03:28-04:00</dc:date>
+        <dc:creator>jcherven</dc:creator>
+        <title>merkel_tree_l.png - created</title>
+        <link>http://jamescherven.com/doku.php?image=merkel_tree_l.png&amp;ns=&amp;rev=1457557408&amp;tab_details=history&amp;mediado=diff&amp;do=media</link>
+        <description>&lt;img src=&quot;http://jamescherven.com/lib/exe/fetch.php?w=206&amp;h=246&amp;t=1457557408&amp;amp;tok=298637&amp;amp;media=merkel_tree_l.png&quot; alt=&quot;merkel_tree_l.png&quot; /&gt;</description>
+    </item>
+</rdf:RDF>

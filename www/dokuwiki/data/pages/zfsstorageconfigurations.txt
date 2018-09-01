@@ -1,0 +1,6 @@
+===== ZFS Storage Configurations =====
+
+The remainder of our documentation will follow the convention set forth in the previous sections. We should have twelve 20GB disks, each with a 19GB data partition named //zfs#// and a swap partition consuming the remainder of that disk. Before continuing, confirm you have twelve partitions available labeled zfs0 through zfs11. In production, of course, you will have partition names that are more useful to you that indicate the physical location of that partition's disk, but here we will use a simplified naming scheme.
+
+    * [[zfsstorageconfigurations:scratchdisks|Scratch Disks with ZFS Stripe]]
+

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- generator="FeedCreator 1.7.2-ppt DokuWiki" -->
+<?xml-stylesheet href="http://198.199.68.247/lib/exe/css.php?s=feed" type="text/css"?>
+<rdf:RDF
+    xmlns="http://purl.org/rss/1.0/"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+    xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <channel rdf:about="http://198.199.68.247/feed.php">
+        <title>Storage, Backup, &amp; Recovery with ZFS on Linux</title>
+        <description></description>
+        <link>http://198.199.68.247/</link>
+        <image rdf:resource="http://198.199.68.247/lib/tpl/codowik-master/images/favicon.ico" />
+       <dc:date>2017-05-03T22:09:50-04:00</dc:date>
+        <items>
+            <rdf:Seq>
+                <rdf:li rdf:resource="http://198.199.68.247/doku.php?id=sidebar&amp;rev=1481120599&amp;do=diff"/>
+                <rdf:li rdf:resource="http://198.199.68.247/doku.php?id=start&amp;rev=1480739072&amp;do=diff"/>
+                <rdf:li rdf:resource="http://198.199.68.247/doku.php?id=zfsworkloadtesting&amp;rev=1480564220&amp;do=diff"/>
+                <rdf:li rdf:resource="http://198.199.68.247/doku.php?id=labenvironment&amp;rev=1478984668&amp;do=diff"/>
+                <rdf:li rdf:resource="http://198.199.68.247/doku.php?image=screen_shot_2016-11-12_at_3.14.07_pm.png&amp;ns=&amp;rev=1478981670&amp;tab_details=history&amp;mediado=diff&amp;do=media"/>
+                <rdf:li rdf:resource="http://198.199.68.247/doku.php?image=screen_shot_2016-11-12_at_3.09.06_pm.png&amp;ns=&amp;rev=1478981417&amp;tab_details=history&amp;mediado=diff&amp;do=media"/>
+                <rdf:li rdf:resource="http://198.199.68.247/doku.php?image=screen_shot_2016-11-12_at_2.32.59_pm.png&amp;ns=&amp;rev=1478979207&amp;tab_details=history&amp;mediado=diff&amp;do=media"/>
+                <rdf:li rdf:resource="http://198.199.68.247/doku.php?image=screen_shot_2016-11-12_at_2.24.44_pm.png&amp;ns=&amp;rev=1478978823&amp;tab_details=history&amp;mediado=diff&amp;do=media"/>
+                <rdf:li rdf:resource="http://198.199.68.247/doku.php?image=screen_shot_2016-11-12_at_2.19.00_pm.png&amp;ns=&amp;rev=1478978550&amp;tab_details=history&amp;mediado=diff&amp;do=media"/>
+                <rdf:li rdf:resource="http://198.199.68.247/doku.php?image=screen_shot_2016-11-12_at_2.14.56_pm.png&amp;ns=&amp;rev=1478978250&amp;tab_details=history&amp;mediado=diff&amp;do=media"/>
+                <rdf:li rdf:resource="http://198.199.68.247/doku.php?image=merkel_tree_l.png&amp;ns=&amp;rev=1457557408&amp;tab_details=history&amp;mediado=diff&amp;do=media"/>
+            </rdf:Seq>
+        </items>
+    </channel>
+    <image rdf:about="http://198.199.68.247/lib/tpl/codowik-master/images/favicon.ico">
+        <title>Storage, Backup, &amp; Recovery with ZFS on Linux</title>
+        <link>http://198.199.68.247/</link>
+        <url>http://198.199.68.247/lib/tpl/codowik-master/images/favicon.ico</url>
+    </image>
+    <item rdf:about="http://198.199.68.247/doku.php?id=sidebar&amp;rev=1481120599&amp;do=diff">
+        <dc:format>text/html</dc:format>
+        <dc:date>2016-12-07T09:23:19-04:00</dc:date>
+        <dc:creator>jcherven</dc:creator>
+        <title>sidebar</title>
+        <link>http://198.199.68.247/doku.php?id=sidebar&amp;rev=1481120599&amp;do=diff</link>
+        <description>* Presentation slides via Google Docs
+	*  ZFS Primer
+	*  Our Lab Environment
+	*  Principles of ZFS
+	*  ZFS Storage Pool Workload Testing
+	* ZFS Storage Configurations
+		*  Scratch Disks
+		*  Mirrors
+
+
+----------
+
+	*  Meta 
+		*  Sidebar</description>
+    </item>
+    <item rdf:about="http://198.199.68.247/doku.php?id=start&amp;rev=1480739072&amp;do=diff">
+        <dc:format>text/html</dc:format>
+        <dc:date>2016-12-02T23:24:32-04:00</dc:date>
+        <dc:creator>jcherven</dc:creator>
+        <title>start</title>
+        <link>http://198.199.68.247/doku.php?id=start&amp;rev=1480739072&amp;do=diff</link>
+        <description>zfsprimer</description>
+    </item>
+    <item rdf:about="http://198.199.68.247/doku.php?id=zfsworkloadtesting&amp;rev=1480564220&amp;do=diff">
+        <dc:format>text/html</dc:format>
+        <dc:date>2016-11-30T22:50:20-04:00</dc:date>
+        <dc:creator>jcherven</dc:creator>
+        <title>zfsworkloadtesting</title>
+        <link>http://198.199.68.247/doku.php?id=zfsworkloadtesting&amp;rev=1480564220&amp;do=diff</link>
+        <description>ZFS Workload Testing
+
+This portion of the documentation will be concerned with the test environment created in the previous section. We'll review some simple scripts that have been created to put a ZFS storage pool under a fairly typical read/write workload so that system resource statistics can be measured and analyzed. The synthetic benchmarking environment is available as a Docker container on</description>
+    </item>
+    <item rdf:about="http://198.199.68.247/doku.php?id=labenvironment&amp;rev=1478984668&amp;do=diff">
+        <dc:format>text/html</dc:format>
+        <dc:date>2016-11-12T16:04:28-04:00</dc:date>
+        <dc:creator>jcherven</dc:creator>
+        <title>labenvironment - [Installing ZFS] </title>
+        <link>http://198.199.68.247/doku.php?id=labenvironment&amp;rev=1478984668&amp;do=diff</link>
+        <description>Our Lab Environment
+
+DigitalOcean instances (AKA Droplets) with attached block Volumes will be used in this lab environment. Droplets are inexpensive, highly available virtualized server instances that can very quickly be created, modified, destroyed, and configured.
+
+In order to make our test environment easily replicated and deterministic, we will also make use of</description>
+    </item>
+    <item rdf:about="http://198.199.68.247/doku.php?image=screen_shot_2016-11-12_at_3.14.07_pm.png&amp;ns=&amp;rev=1478981670&amp;tab_details=history&amp;mediado=diff&amp;do=media">
+        <dc:format>text/html</dc:format>
+        <dc:date>2016-11-12T15:14:30-04:00</dc:date>
+        <dc:creator>jcherven</dc:creator>
+        <title>screen_shot_2016-11-12_at_3.14.07_pm.png - created</title>
+        <link>http://198.199.68.247/doku.php?image=screen_shot_2016-11-12_at_3.14.07_pm.png&amp;ns=&amp;rev=1478981670&amp;tab_details=history&amp;mediado=diff&amp;do=media</link>
+        <description>&lt;img src=&quot;http://198.199.68.247/lib/exe/fetch.php?w=499&amp;h=316&amp;t=1478981670&amp;amp;tok=c39b19&amp;amp;media=screen_shot_2016-11-12_at_3.14.07_pm.png&quot; alt=&quot;screen_shot_2016-11-12_at_3.14.07_pm.png&quot; /&gt;</description>
+    </item>
+    <item rdf:about="http://198.199.68.247/doku.php?image=screen_shot_2016-11-12_at_3.09.06_pm.png&amp;ns=&amp;rev=1478981417&amp;tab_details=history&amp;mediado=diff&amp;do=media">
+        <dc:format>text/html</dc:format>
+        <dc:date>2016-11-12T15:10:17-04:00</dc:date>
+        <dc:creator>jcherven</dc:creator>
+        <title>screen_shot_2016-11-12_at_3.09.06_pm.png - created</title>
+        <link>http://198.199.68.247/doku.php?image=screen_shot_2016-11-12_at_3.09.06_pm.png&amp;ns=&amp;rev=1478981417&amp;tab_details=history&amp;mediado=diff&amp;do=media</link>
+        <description>&lt;img src=&quot;http://198.199.68.247/lib/exe/fetch.php?w=371&amp;h=500&amp;t=1478981417&amp;amp;tok=aa8876&amp;amp;media=screen_shot_2016-11-12_at_3.09.06_pm.png&quot; alt=&quot;screen_shot_2016-11-12_at_3.09.06_pm.png&quot; /&gt;</description>
+    </item>
+    <item rdf:about="http://198.199.68.247/doku.php?image=screen_shot_2016-11-12_at_2.32.59_pm.png&amp;ns=&amp;rev=1478979207&amp;tab_details=history&amp;mediado=diff&amp;do=media">
+        <dc:format>text/html</dc:format>
+        <dc:date>2016-11-12T14:33:27-04:00</dc:date>
+        <dc:creator>jcherven</dc:creator>
+        <title>screen_shot_2016-11-12_at_2.32.59_pm.png - created</title>
+        <link>http://198.199.68.247/doku.php?image=screen_shot_2016-11-12_at_2.32.59_pm.png&amp;ns=&amp;rev=1478979207&amp;tab_details=history&amp;mediado=diff&amp;do=media</link>
+        <description>&lt;img src=&quot;http://198.199.68.247/lib/exe/fetch.php?w=406&amp;h=236&amp;t=1478979207&amp;amp;tok=556ec7&amp;amp;media=screen_shot_2016-11-12_at_2.32.59_pm.png&quot; alt=&quot;screen_shot_2016-11-12_at_2.32.59_pm.png&quot; /&gt;</description>
+    </item>
+    <item rdf:about="http://198.199.68.247/doku.php?image=screen_shot_2016-11-12_at_2.24.44_pm.png&amp;ns=&amp;rev=1478978823&amp;tab_details=history&amp;mediado=diff&amp;do=media">
+        <dc:format>text/html</dc:format>
+        <dc:date>2016-11-12T14:27:03-04:00</dc:date>
+        <dc:creator>jcherven</dc:creator>
+        <title>screen_shot_2016-11-12_at_2.24.44_pm.png - created</title>
+        <link>http://198.199.68.247/doku.php?image=screen_shot_2016-11-12_at_2.24.44_pm.png&amp;ns=&amp;rev=1478978823&amp;tab_details=history&amp;mediado=diff&amp;do=media</link>
+        <description>&lt;img src=&quot;http://198.199.68.247/lib/exe/fetch.php?w=500&amp;h=283&amp;t=1478978823&amp;amp;tok=5c1ce9&amp;amp;media=screen_shot_2016-11-12_at_2.24.44_pm.png&quot; alt=&quot;screen_shot_2016-11-12_at_2.24.44_pm.png&quot; /&gt;</description>
+    </item>
+    <item rdf:about="http://198.199.68.247/doku.php?image=screen_shot_2016-11-12_at_2.19.00_pm.png&amp;ns=&amp;rev=1478978550&amp;tab_details=history&amp;mediado=diff&amp;do=media">
+        <dc:format>text/html</dc:format>
+        <dc:date>2016-11-12T14:22:30-04:00</dc:date>
+        <dc:creator>jcherven</dc:creator>
+        <title>screen_shot_2016-11-12_at_2.19.00_pm.png - created</title>
+        <link>http://198.199.68.247/doku.php?image=screen_shot_2016-11-12_at_2.19.00_pm.png&amp;ns=&amp;rev=1478978550&amp;tab_details=history&amp;mediado=diff&amp;do=media</link>
+        <description>&lt;img src=&quot;http://198.199.68.247/lib/exe/fetch.php?w=500&amp;h=256&amp;t=1478978550&amp;amp;tok=9dc0ea&amp;amp;media=screen_shot_2016-11-12_at_2.19.00_pm.png&quot; alt=&quot;screen_shot_2016-11-12_at_2.19.00_pm.png&quot; /&gt;</description>
+    </item>
+    <item rdf:about="http://198.199.68.247/doku.php?image=screen_shot_2016-11-12_at_2.14.56_pm.png&amp;ns=&amp;rev=1478978250&amp;tab_details=history&amp;mediado=diff&amp;do=media">
+        <dc:format>text/html</dc:format>
+        <dc:date>2016-11-12T14:17:30-04:00</dc:date>
+        <dc:creator>jcherven</dc:creator>
+        <title>screen_shot_2016-11-12_at_2.14.56_pm.png - created</title>
+        <link>http://198.199.68.247/doku.php?image=screen_shot_2016-11-12_at_2.14.56_pm.png&amp;ns=&amp;rev=1478978250&amp;tab_details=history&amp;mediado=diff&amp;do=media</link>
+        <description>&lt;img src=&quot;http://198.199.68.247/lib/exe/fetch.php?w=411&amp;h=315&amp;t=1478978250&amp;amp;tok=801a72&amp;amp;media=screen_shot_2016-11-12_at_2.14.56_pm.png&quot; alt=&quot;screen_shot_2016-11-12_at_2.14.56_pm.png&quot; /&gt;</description>
+    </item>
+    <item rdf:about="http://198.199.68.247/doku.php?image=merkel_tree_l.png&amp;ns=&amp;rev=1457557408&amp;tab_details=history&amp;mediado=diff&amp;do=media">
+        <dc:format>text/html</dc:format>
+        <dc:date>2016-03-09T16:03:28-04:00</dc:date>
+        <dc:creator>jcherven</dc:creator>
+        <title>merkel_tree_l.png - created</title>
+        <link>http://198.199.68.247/doku.php?image=merkel_tree_l.png&amp;ns=&amp;rev=1457557408&amp;tab_details=history&amp;mediado=diff&amp;do=media</link>
+        <description>&lt;img src=&quot;http://198.199.68.247/lib/exe/fetch.php?w=206&amp;h=246&amp;t=1457557408&amp;amp;tok=298637&amp;amp;media=merkel_tree_l.png&quot; alt=&quot;merkel_tree_l.png&quot; /&gt;</description>
+    </item>
+</rdf:RDF>

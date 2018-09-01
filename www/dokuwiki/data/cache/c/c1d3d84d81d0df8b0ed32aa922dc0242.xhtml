@@ -1,0 +1,25 @@
+
+<h2 class="sectionedit1" id="copy-on-write_filesystems">Copy-On-Write Filesystems</h2>
+<div class="level2">
+
+<p>
+ZFS is not the only filesystem taking advantage of modern ideas on data storage models, but it was one of the first and is currently one of the most mature. Microsoft&#039;s ReFS, Btrfs, WAFL, and NILFS are some other examples of filesystems that take advantage of a data storage model known as copy-on-write (COW). This is a perfectly descriptive name for how the model works: when a block is modified, a copy of it is made instead of being modified directly. The copy is then referenced as the active data, and the old block is dereferenced and marked as free. As a COW filesystem gets used more and more, the data in use crawls toward the end of the disk. When there are no more blocks ahead of the last written one, data starts being written over free blocks at the beginning of the disk. Even on small storage pools, this can take quite a long time. Even so, COW filesystems have have features that help prevent losing that data if you still need it.
+</p>
+
+<p>
+The greatest advantage of COW is the ability take snapshots of the data set that are very cheap on disk space but very resilient and useful for backup and restoration. The dereferenced blocks, while marked as free, provide a copy that can be referenced if you&#039;d like to restore previous data. This is no small advantage over filesystems which simply write blocks directly to free space on disk, because many backup and restoration tasks are made much simpler.
+</p>
+
+<p>
+Why are snapshots so inexpensive in terms of disk space? COW filesystems cryptographically hash each data block and adds that hash as a node on a tree structure known as a Merkle Tree, which is simply a tree of hashes. Each hash block has a direct relationship with the data block. The snapshot taken is a copy of the Merkle Tree, which can be used to rebuild its corresponding data tree. Thus, snapshots of the dataset take up only the amount of space per block as its cryptographic hash.
+</p>
+
+<p>
+This is actually a side effect of a more direct purpose for hashing each data block, which is to assure data integrity. Since each hash block has a direct relationship with its data block, data blocks can be checked against its hash block to detect silent corruption. If the data block does not match the hash block, the filesystem believes with fairly high certainty that it is corrupted and can correct the data. COW filesystems take full advantage of cheap computing capacity in the service of assuring the solipsitic trust in stored data as well as simplifying its administration.
+</p>
+
+<p>
+<em>Read next:</em> <a href="/doku.php?id=zfsprimer:itsnotjustafilesystem" class="wikilink2" title="zfsprimer:itsnotjustafilesystem" rel="nofollow">It&#039;s Not Really A Filesystem</a>
+</p>
+
+</div>

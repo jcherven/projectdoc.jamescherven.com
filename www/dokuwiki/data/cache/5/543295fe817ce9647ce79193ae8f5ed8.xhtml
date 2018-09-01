@@ -1,0 +1,21 @@
+
+<h2 class="sectionedit1" id="why_zfs">Why ZFS?</h2>
+<div class="level2">
+
+<p>
+A typical storage administration scenario involves the sysadmin in numerous tasks that can be considered somewhat arcane when we step back and really look at what we&#039;re doing. The logical storage space is often coupled to some storage device&#039;s physical capacity in a direct way. That device has its own partition table and filesystem that must be mounted. If that device fails or suffers low level corruption, it needs to be unmounted, the disk replaced, the partition rewritten, then the data copied onto the replacement media.
+</p>
+
+<p>
+There are fewer and fewer susbsystems in modern computing that still require this much low-level management by the system administrator. The ideas behind filesystems that are still used today were devised at a time when current device storage capacity was inconceivable and management of nontrivial storage sizes were very computationally expensive. We&#039;ve only built directly on those foundations without giving much thought to updating those ideas, choosing instead to design around the annoying and fragile parts of it. If hard drives are all but guaranteed to fail at some point in time, why do our filesystems assume immortal physical media in their design? Why is the swapping of failed drives or the repair of a corrupted filesystem sometimes such a painful undertaking?
+</p>
+
+<p>
+Compare block storage to other types of storage, such as RAM. When a DIMM fails, the machine is powered down, the DIMM module is replaced, and the machine is powered back up. To the virtual memory subsystem, the recognition and initialization of that new hardware and its resources is abstracted away so it can carry on with its duties. Modern RAM also protects itself against silent data corruption, refusing to pass data that it understands as incorrect. This exact behavior directly inspired the design of the Zettabyte filesystem, or ZFS, so named as its mathematical limits for a single storage pool extend into the order of a zettabyte (and well beyond).
+</p>
+
+<p>
+<em>Read next:</em> <a href="/doku.php?id=zfsprimer:cowfilesystems" class="wikilink1" title="zfsprimer:cowfilesystems">Copy-On-Write Filesystems</a>
+</p>
+
+</div>

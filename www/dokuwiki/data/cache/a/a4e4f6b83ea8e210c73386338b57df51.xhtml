@@ -1,0 +1,13 @@
+
+<h2 class="sectionedit1" id="zfs_workload_testing">ZFS Workload Testing</h2>
+<div class="level2">
+
+<p>
+This portion of the documentation will be concerned with the test environment created in the previous section. We&#039;ll review some simple scripts that have been created to put a ZFS storage pool under a fairly typical read/write workload so that system resource statistics can be measured and analyzed. The synthetic benchmarking environment is available as a Docker container on <a href="https://hub.docker.com/r/jcherven/zfsproject/" class="urlextern" title="https://hub.docker.com/r/jcherven/zfsproject/"  rel="nofollow">Docker Hub</a>. The workload scripts are available on <a href="https://github.com/jcherven/zfsproject" class="urlextern" title="https://github.com/jcherven/zfsproject"  rel="nofollow">Github</a>.
+</p>
+
+<p>
+The Docker image used in this lab requires an Ubuntu 16.04 host with ZFS installed on it. ZFS running in the container requires privileged access to mounts in /proc as well as direct access to block storage on the host. For information on setting this environment up, please see the <a href="/doku.php?id=labenvironment" class="wikilink1" title="labenvironment">Lab Environment</a> section.
+</p>
+
+</div>

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- generator="FeedCreator 1.7.2-ppt DokuWiki" -->
+<?xml-stylesheet href="http://198.199.68.247/lib/exe/css.php?s=feed" type="text/css"?>
+<rdf:RDF
+    xmlns="http://purl.org/rss/1.0/"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+    xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <channel rdf:about="http://198.199.68.247/feed.php">
+        <title>Storage, Backup, &amp; Recovery with ZFS on Linux</title>
+        <description></description>
+        <link>http://198.199.68.247/</link>
+        <image rdf:resource="http://198.199.68.247/lib/tpl/codowik-master/images/favicon.ico" />
+       <dc:date>2018-05-14T11:15:38-04:00</dc:date>
+        <items>
+            <rdf:Seq>
+                <rdf:li rdf:resource="http://198.199.68.247/doku.php?id=labenvironment&amp;rev=1478984668&amp;do=diff"/>
+                <rdf:li rdf:resource="http://198.199.68.247/doku.php?id=meta&amp;rev=1457306250&amp;do=diff"/>
+                <rdf:li rdf:resource="http://198.199.68.247/doku.php?id=principlesofzfs&amp;rev=1460557297&amp;do=diff"/>
+                <rdf:li rdf:resource="http://198.199.68.247/doku.php?id=sidebar&amp;rev=1481120599&amp;do=diff"/>
+                <rdf:li rdf:resource="http://198.199.68.247/doku.php?id=start&amp;rev=1480739072&amp;do=diff"/>
+                <rdf:li rdf:resource="http://198.199.68.247/doku.php?id=zfsbackupconfigurations&amp;rev=1458700394&amp;do=diff"/>
+                <rdf:li rdf:resource="http://198.199.68.247/doku.php?id=zfsperformance&amp;rev=1460552179&amp;do=diff"/>
+                <rdf:li rdf:resource="http://198.199.68.247/doku.php?id=zfsprimer&amp;rev=1472088381&amp;do=diff"/>
+                <rdf:li rdf:resource="http://198.199.68.247/doku.php?id=zfsstorageconfigurations&amp;rev=1460235223&amp;do=diff"/>
+                <rdf:li rdf:resource="http://198.199.68.247/doku.php?id=zfsworkloadtesting&amp;rev=1480564220&amp;do=diff"/>
+            </rdf:Seq>
+        </items>
+    </channel>
+    <image rdf:about="http://198.199.68.247/lib/tpl/codowik-master/images/favicon.ico">
+        <title>Storage, Backup, &amp; Recovery with ZFS on Linux</title>
+        <link>http://198.199.68.247/</link>
+        <url>http://198.199.68.247/lib/tpl/codowik-master/images/favicon.ico</url>
+    </image>
+    <item rdf:about="http://198.199.68.247/doku.php?id=labenvironment&amp;rev=1478984668&amp;do=diff">
+        <dc:format>text/html</dc:format>
+        <dc:date>2016-11-12T16:04:28-04:00</dc:date>
+        <title>labenvironment</title>
+        <link>http://198.199.68.247/doku.php?id=labenvironment&amp;rev=1478984668&amp;do=diff</link>
+        <description>Our Lab Environment
+
+DigitalOcean instances (AKA Droplets) with attached block Volumes will be used in this lab environment. Droplets are inexpensive, highly available virtualized server instances that can very quickly be created, modified, destroyed, and configured.
+
+In order to make our test environment easily replicated and deterministic, we will also make use of</description>
+    </item>
+    <item rdf:about="http://198.199.68.247/doku.php?id=meta&amp;rev=1457306250&amp;do=diff">
+        <dc:format>text/html</dc:format>
+        <dc:date>2016-03-06T18:17:30-04:00</dc:date>
+        <title>meta</title>
+        <link>http://198.199.68.247/doku.php?id=meta&amp;rev=1457306250&amp;do=diff</link>
+        <description>Meta
+
+	*  Edit the Sidebar</description>
+    </item>
+    <item rdf:about="http://198.199.68.247/doku.php?id=principlesofzfs&amp;rev=1460557297&amp;do=diff">
+        <dc:format>text/html</dc:format>
+        <dc:date>2016-04-13T10:21:37-04:00</dc:date>
+        <title>principlesofzfs</title>
+        <link>http://198.199.68.247/doku.php?id=principlesofzfs&amp;rev=1460557297&amp;do=diff</link>
+        <description>Principles of ZFS
+
+From the zfs(8) manual page:
+
+	&quot; The  zfs command configures ZFS datasets within a ZFS storage pool, as described in zpool(8). A dataset is identified by a unique path within the ZFS namespace.&quot;
+
+It continues:
+
+	&quot; A  ZFS  storage  pool  is  a logical collection of devices that provide space for datasets. A storage pool is also the root of the ZFS file system hierarchy. The root of the pool can be accessed as a file system, such as mounting and unmounting,  taking  snapshots,  …</description>
+    </item>
+    <item rdf:about="http://198.199.68.247/doku.php?id=sidebar&amp;rev=1481120599&amp;do=diff">
+        <dc:format>text/html</dc:format>
+        <dc:date>2016-12-07T09:23:19-04:00</dc:date>
+        <title>sidebar</title>
+        <link>http://198.199.68.247/doku.php?id=sidebar&amp;rev=1481120599&amp;do=diff</link>
+        <description>* Presentation slides via Google Docs
+	*  ZFS Primer
+	*  Our Lab Environment
+	*  Principles of ZFS
+	*  ZFS Storage Pool Workload Testing
+	* ZFS Storage Configurations
+		*  Scratch Disks
+		*  Mirrors
+
+
+----------
+
+	*  Meta 
+		*  Sidebar</description>
+    </item>
+    <item rdf:about="http://198.199.68.247/doku.php?id=start&amp;rev=1480739072&amp;do=diff">
+        <dc:format>text/html</dc:format>
+        <dc:date>2016-12-02T23:24:32-04:00</dc:date>
+        <title>start</title>
+        <link>http://198.199.68.247/doku.php?id=start&amp;rev=1480739072&amp;do=diff</link>
+        <description>zfsprimer</description>
+    </item>
+    <item rdf:about="http://198.199.68.247/doku.php?id=zfsbackupconfigurations&amp;rev=1458700394&amp;do=diff">
+        <dc:format>text/html</dc:format>
+        <dc:date>2016-03-22T22:33:14-04:00</dc:date>
+        <title>zfsbackupconfigurations</title>
+        <link>http://198.199.68.247/doku.php?id=zfsbackupconfigurations&amp;rev=1458700394&amp;do=diff</link>
+        <description>ZFS Backup Configurations</description>
+    </item>
+    <item rdf:about="http://198.199.68.247/doku.php?id=zfsperformance&amp;rev=1460552179&amp;do=diff">
+        <dc:format>text/html</dc:format>
+        <dc:date>2016-04-13T08:56:19-04:00</dc:date>
+        <title>zfsperformance</title>
+        <link>http://198.199.68.247/doku.php?id=zfsperformance&amp;rev=1460552179&amp;do=diff</link>
+        <description>Comparing ZFS Performance
+
+This section contains some synthetic benchmarks for comparing performance between configurations and should give you guidance when preparing similar tests with your current storage configuration. While performance under actual workloads will vary greatly from those in our virtual environment, it should be possible to create a virtualized simulacra of your environment and configuration and compare them to a ZFS equivalent.</description>
+    </item>
+    <item rdf:about="http://198.199.68.247/doku.php?id=zfsprimer&amp;rev=1472088381&amp;do=diff">
+        <dc:format>text/html</dc:format>
+        <dc:date>2016-08-24T21:26:21-04:00</dc:date>
+        <title>zfsprimer</title>
+        <link>http://198.199.68.247/doku.php?id=zfsprimer&amp;rev=1472088381&amp;do=diff</link>
+        <description>ZFS: A Primer
+
+Why ZFS?
+
+A typical storage administration scenario involves the sysadmin in numerous tasks that can be considered somewhat arcane when we step back and really look at what we're doing. The logical storage space is often coupled to some storage device's physical capacity in a direct way. That device has its own partition table and filesystem that must be mounted. If that device fails or suffers low level corruption, it needs to be unmounted, the disk replaced, the partition rewrit…</description>
+    </item>
+    <item rdf:about="http://198.199.68.247/doku.php?id=zfsstorageconfigurations&amp;rev=1460235223&amp;do=diff">
+        <dc:format>text/html</dc:format>
+        <dc:date>2016-04-09T16:53:43-04:00</dc:date>
+        <title>zfsstorageconfigurations</title>
+        <link>http://198.199.68.247/doku.php?id=zfsstorageconfigurations&amp;rev=1460235223&amp;do=diff</link>
+        <description>ZFS Storage Configurations
+
+The remainder of our documentation will follow the convention set forth in the previous sections. We should have twelve 20GB disks, each with a 19GB data partition named zfs# and a swap partition consuming the remainder of that disk. Before continuing, confirm you have twelve partitions available labeled zfs0 through zfs11. In production, of course, you will have partition names that are more useful to you that indicate the physical location of that partition's disk, …</description>
+    </item>
+    <item rdf:about="http://198.199.68.247/doku.php?id=zfsworkloadtesting&amp;rev=1480564220&amp;do=diff">
+        <dc:format>text/html</dc:format>
+        <dc:date>2016-11-30T22:50:20-04:00</dc:date>
+        <title>zfsworkloadtesting</title>
+        <link>http://198.199.68.247/doku.php?id=zfsworkloadtesting&amp;rev=1480564220&amp;do=diff</link>
+        <description>ZFS Workload Testing
+
+This portion of the documentation will be concerned with the test environment created in the previous section. We'll review some simple scripts that have been created to put a ZFS storage pool under a fairly typical read/write workload so that system resource statistics can be measured and analyzed. The synthetic benchmarking environment is available as a Docker container on</description>
+    </item>
+</rdf:RDF>

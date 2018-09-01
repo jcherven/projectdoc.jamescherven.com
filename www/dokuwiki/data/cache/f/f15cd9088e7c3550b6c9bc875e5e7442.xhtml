@@ -1,0 +1,29 @@
+
+<h2 class="sectionedit1" id="our_storage_system_lab_environment">Our Storage System Lab Environment</h2>
+<div class="level2">
+
+<p>
+Virtualbox 5.0.14 will be used for this lab environment. For ZFS, it&#039;s recommended that your host machine have relatively ample resources as its needs are not as trivial as you may be accustomed to with traditional storage solutions. In use cases with very large storage pools and deduplication enabled, a ZFS server with 64 <abbr title="Gigabyte">GB</abbr> of RAM can be considered a resource-constrained environment. For the many production uses, though, 8 <abbr title="Gigabyte">GB</abbr> is recommended as a good starting point to begin scaling as needed.
+</p>
+
+<p>
+Our lab environment will not approach the use case described above. While the sheer size of those storage pools will be far from what we need to just experiment with ZFS, we would like to create a simulacra of a nontrivially complex storage rack with small virtual disks. This will allow us to take a deep dive into administering the storage system without the need for enormous computing resources; the guest VMs should only require between 2-4 <abbr title="Gigabyte">GB</abbr>. Since our goal is to demonstrate a highly available storage, backup, and recovery system, our host system should have sufficient resources to run several of these servers as well as their disaster recovery and failover components. The base VM&#039;s specific configuration is as follows:
+</p>
+
+<p>
+This lab will be based on CentOS 7 for its host systems. This choice was made due to its binary compatibility with RHEL, allowing those using Red Hat in the enterprise to easily work through this document.
+</p>
+
+<p>
+At the time of writing, Debian is a popular choice for ZFS storage systems due to its conservative approach to stabilizing packages. While ZoL is considered mature, it is a LKM highly dependent on many things in the kernel. Hasty kernel updates can break the module in unpredictable ways, so Debian&#039;s stable branch obviates this risk considerably.
+</p>
+
+<p>
+It was also recently announced that the future version of Ubuntu&#039;s 16.04 LTS will not only support ZFS but ship with the kernel modules, requiring us to simply enable it to start using it. There is much to be made clear about this upcoming addition to a very popular Linux flavor but the potential to mainstream ZFS is quite exciting for storage administrators in many organizations who are unable to move to a ZFS supported BSD or take on the challenge of adding ZoL to their existing infrastructure.
+</p>
+
+<p>
+For the moment, we will be looking at getting these systems working in CentOS. Many of the details in using ZFS will not be materially different between Linux flavors for administrators, but installing ZoL will differ slightly.
+</p>
+
+</div>

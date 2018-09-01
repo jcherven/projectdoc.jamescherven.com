@@ -1,0 +1,74 @@
+
+<h2 class="sectionedit1" id="zfsa_primer">ZFS: A Primer</h2>
+<div class="level2">
+
+</div>
+<!-- EDIT1 SECTION "ZFS: A Primer" [1-27] -->
+<h3 class="sectionedit2" id="why_zfs">Why ZFS?</h3>
+<div class="level3">
+
+<p>
+A typical storage administration scenario involves the sysadmin in numerous tasks that can be considered somewhat arcane when we step back and really look at what we&#039;re doing. The logical storage space is often coupled to some storage device&#039;s physical capacity in a direct way. That device has its own partition table and filesystem that must be mounted. If that device fails or suffers low level corruption, it needs to be unmounted, the disk replaced, the partition rewritten, then the data copied onto the replacement media. We&#039;re usually limited in choices for replacement disks since they vary in geometry between vendors. Arrays are very picky about device details, which can be misreported by both the vendor and the device itself.
+</p>
+
+<p>
+There are fewer and fewer susbsystems in modern computing that still require this much low-level attention by the system administrator. The ideas behind filesystems that are still used today were devised at a time when today&#039;s device storage capacity was inconceivable and the mounting of nontrivial storage spaces was very computationally expensive. Many of the compromises made are dogmatic principles of the prevailing storage models today. We&#039;ve built technology directly on those storage models without really updating the storage model itself. If hard drives are all but guaranteed to fail at some point in time, why do our filesystems assume immortal physical media in their design? Why is the swapping of failed drives or the repair of a corrupted filesystem sometimes such a painful undertaking?
+</p>
+
+<p>
+Compare block storage to other types of storage, such as RAM. When a DIMM fails, the machine is powered down, the DIMM module is replaced, and the machine is powered back up. To the virtual memory subsystem, the recognition and initialization of that new hardware and its resources is abstracted away so it can carry on with its duties. Some types of modern RAM also protect against silent data corruption, rebuilding corrupted data and refusing to pass data that it believes is incorrect. This exact behavior directly inspired the design of the Zettabyte File System, or ZFS, so named as its mathematical limits for a single storage pool extend into the order of a zettabyte (and well beyond).
+</p>
+
+</div>
+<!-- EDIT2 SECTION "Why ZFS?" [28-2290] -->
+<h3 class="sectionedit3" id="copy-on-write_filesystems">Copy-On-Write Filesystems</h3>
+<div class="level3">
+
+<p>
+ZFS is not the only filesystem taking advantage of modern ideas on data storage models, but it was one of the first and is currently one of the most mature. Microsoft&#039;s ReFS, Btrfs, WAFL, and NILFS are some other examples of filesystems that take advantage of a data storage model known as copy-on-write (COW). This is a perfectly descriptive name for how the model works: when a block is modified, a copy of it is made instead of being modified directly. The copy is then referenced as the active data, and the old block is dereferenced and marked as free. As a COW filesystem gets used more and more, the data in use crawls toward the end of the disk. When there are no more blocks ahead of the last written one, data starts being written over free blocks at the beginning of the disk. Even on small storage pools, this can take quite a long time. Even so, COW filesystems have have features that help prevent losing that data if you still need it.
+</p>
+
+<p>
+The greatest advantage of COW is the ability take snapshots of the data set that are very cheap on disk space but very resilient and useful for backup and restoration. The dereferenced blocks, while marked as free, provide a copy that can be referenced if you&#039;d like to restore previous data. This is no small advantage over filesystems which simply write blocks directly to free space on disk, because many backup and restoration tasks are made much simpler.
+</p>
+
+<p>
+Why are snapshots so inexpensive in terms of disk space? COW filesystems cryptographically hash each data block and adds that hash as a node on a tree structure known as a Merkle Tree, which is simply a tree of hashes. Each hash block has a direct relationship with the data block. The snapshot taken is a copy of the Merkle Tree, which can be used to rebuild its corresponding data tree. Thus, snapshots of the dataset take up only the amount of space per block as its cryptographic hash.
+</p>
+
+<p>
+This is actually a side effect of a more direct purpose for hashing each data block, which is to assure data integrity. Since each hash block has a direct relationship with its data block, data blocks can be checked against its hash block to detect silent corruption. If the data block does not match the hash block, the filesystem believes with fairly high certainty that it is corrupted and can correct the data. COW filesystems take full advantage of cheap computing capacity in the service of assuring the solipsitic trust in stored data as well as simplifying its administration.
+</p>
+
+</div>
+<!-- EDIT3 SECTION "Copy-On-Write Filesystems" [2291-4817] -->
+<h3 class="sectionedit4" id="more_than_a_filesystem">More Than A Filesystem</h3>
+<div class="level3">
+
+<p>
+ZFS is really a subsystem of the <abbr title="Operating System">OS</abbr>. The idea that it is a filesystem actually requires a shift in thought about what the filesystem&#039;s responsibilities are. For ZFS, this includes volume management and assurance of data integrity, which in other storage models are usually software layers above the filesystem. COW is most likely the next step forward for disk filesystems in general. In this future where more disk subsystems take advantage of the COW model, disk subsystems that incorporate storage administration features such as volume management should become the rule rather than an exception.
+</p>
+
+<p>
+The ZFS subsystem gives us management commands that allow us to manage logical storage pools, organize datasets, and arrange physical disks into arrays of various levels of redundancy. In order to get system administrators away from a dogma of logical storage space having a one-to-one relationship to the physical capacities of disks, ZFS wants us to consider volume management a feature of the filesystem. It underlies the block-level storage and organization of data on the physical media, but it also is a set of comprehensive commands and subcommands that sysadmins use to organize their entire storage infrastructure.
+</p>
+
+</div>
+<!-- EDIT4 SECTION "More Than A Filesystem" [4818-6076] -->
+<h3 class="sectionedit5" id="zfs_on_linux">ZFS On Linux</h3>
+<div class="level3">
+
+<p>
+ZFS was originally developed at Sun for the Solaris platform. Sun&#039;s code was originally open source, but upon Sun&#039;s assimilation into Oracle further development on ZFS was made proprietary. Fortunately, the existing Sun open source code was forked and eventually was included in the <a href="http://open-zfs.org/wiki/Main_Page" class="urlextern" title="http://open-zfs.org/wiki/Main_Page"  rel="nofollow">OpenZFS</a> project and licensed under the CDDL. It is today considered a very mature, stable community project. This implementation is used natively in other unix-likes such as FreeBSD and illumOS, among others.
+</p>
+
+<p>
+The Lawrence Livermore National Laboratory, in service of their own computing purposes, has produced a native ZFS for Linux as a loadable kernel module. This work is open source and available as <a href="http://www.zfsonlinux.org" class="urlextern" title="http://www.zfsonlinux.org"  rel="nofollow">ZFS on Linux</a> (ZoL). The LKM approach is necessary to work around certain <abbr title="GNU General Public License">GPL</abbr> features that prohibit OpenZFS from being included in the Linux kernel binaries.
+</p>
+
+<p>
+<em> ⇒ Continue reading: <a href="/doku.php?id=labenvironment" class="wikilink1" title="labenvironment">Our Lab Environment</a> ⇒</em>
+</p>
+
+</div>
+<!-- EDIT5 SECTION "ZFS On Linux" [6077-] -->

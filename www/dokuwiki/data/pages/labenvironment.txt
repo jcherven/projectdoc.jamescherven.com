@@ -1,0 +1,78 @@
+===== Our Lab Environment =====
+
+[[https://www.digitalocean.com/products/compute/|DigitalOcean]] instances (AKA Droplets) with [[https://www.digitalocean.com/products/storage/|attached block Volumes]] will be used in this lab environment. Droplets are inexpensive, highly available virtualized server instances that can very quickly be created, modified, destroyed, and configured.
+
+In order to make our test environment easily replicated and deterministic, we will also make use of [[https://www.docker.com/what-docker|Docker]] images running in a container on our Digital Ocean Droplet host. An image of the test environment container will be available [[https://hub.docker.com/r/jcherven/zfsproject/|here]] so it can easily be pulled to the Docker host, examined, run, and modified on your own.
+
+The test environment can easily be run on any server you have available, and DigitalOcean is only highly recommended for those without readily accessible resources or for the sake of convenience. This document will deal with setting up the environment on DigitalOcean.
+
+Virtualized and containerized environments will understandably have a certain effect on storage and computing performance in our benchmarks, so we will be looking at our data in this context. The data produced will be synthetic and only compared with other similar environments. This serves our need for convenience as a first look at ZFS storage pools, but our tests will have the ability to run on hardware uncontainerized if that context is needed. The bash source for our configuration and test scripts are available on [[https://github.com/jcherven/zfsproject|Github]].
+
+==== DigitalOcean Droplet Environment ====
+
+=== Create the Virtual Host ===
+
+  - Create an account at [[https://cloud.digitalocean.com/registrations/new|DigitalOcean]]. Payment information will be required, but running simple, temporary instances is very inexpensive. Billing is dependent on usage, so a $20 per month Droplet can end up costing as little as a dollar for running our test environment.
+  - Create a new virtualized server instance, known as a Droplet, from the upper-right hand corner of the window. {{ :screen_shot_2016-11-12_at_2.14.56_pm.png?nolink |}}
+
+  - DigitalOcean offers a preconfigured Docker 1.12 host running on Ubuntu 16.04, which we will use. (Information on installing Docker on an existing host can be found [[https://docs.docker.com/engine/getstarted/|here]]). The preconfigured host is found in the One-Click Apps section at the top of the screen. {{ ::screen_shot_2016-11-12_at_2.19.00_pm.png?nolink |}}
+  - In the //Choose a Size// heading, it is highly recommended to select the Standard $20/month instance which includes 2GB of RAM and two CPU in order to accommodate ZFS's requirements. Since charges are based on usage of the instance, actual cost of running our test environment will be significantly less. {{ ::screen_shot_2016-11-12_at_2.24.44_pm.png?nolink |}}
+  - In the //Choose Datacenter Region// heading, select either NYC1, SFO1, or FRA1 depending on your geographic location. These locations support [[https://www.digitalocean.com/products/storage/|Volumes]], a feature that will be necessary for adding virtual block storage devices our test environment. {{ ::screen_shot_2016-11-12_at_2.32.59_pm.png?nolink |}}
+  - In the //Add Your SSH Keys// section, it is highly recommended to add a SSH public key from your PC. This will simplify secure remote access to the host after creation. More information can be found [[https://www.digitalocean.com/community/tutorials/how-to-use-ssh-keys-with-digitalocean-droplets|here]].
+  - In the //Finalize and Create// section, choose a hostname and complete the Droplet creation.
+
+ 
+==== Droplet Configuration ====
+
+If you are proceeding with a Droplet as your test environment host, we now will add block storage known as Volumes to the Droplet. These virtual block devices will be a simulacra of our ZFS storage pool's physical array, allowing physical and logical topologies to be configured in various ways. These instructions can be extended to support more disks than we create here to experiment with further zpool configuration.
+
+  - Select your newly created Droplet from your DO dashboard and find the Volumes area on the left. Click //Add Volume// to get started. {{ :screen_shot_2016-11-12_at_3.09.06_pm.png?nolink |}}
+  - We're creating a limited, synthetic test environment and will have modest storage needs. Select the $0.10/month Volume set to 1GB, then give the device a sequential name such as //zfs1// or //disk1//. A Volume created in this menu will automatically be attached to your Droplet. {{ :screen_shot_2016-11-12_at_3.14.07_pm.png?nolink |}} Because our ZFS environment deals with raw disks, you can ignore the mounting information screen which follows. Repeat this step to create four Volumes, sequentially named.
+
+At this point we should have a remote virtual host running Ubuntu with Docker and four or more attached block devices. You can now SSH to the machine and review its configuration. It's recommended the get the Ubuntu system fully up to date before proceeding. Additionally, run //lsblk// to verify that your block devices are present. The Droplet's root device should be /dev/vda, and the Volumes should be /dev/sd{a..d}.
+==== Host Configuration ====
+Ubuntu's ZFS packages will need to be installed on the Docker host, since the container layer of our test environment will rely on the ZFS modules in the host's kernel layer. Ubuntu 16.04 includes ZFS natively with the package name [[https://wiki.ubuntu.com/ZFS|zfs]].
+
+Once installed, verify that ZFS is running: <code># lsmod | grep zfs
+zfs                  2813952  3
+zunicode              331776  1 zfs
+zcommon                57344  1 zfs
+znvpair                90112  2 zfs,zcommon
+spl                   102400  3 zfs,zcommon,znvpair
+zavl                   16384  1 zfs</code>
+
+If one or more of these modules are missing, rebooting your Droplet may load them properly.
+
+To verify that Docker is up and running, run:<code># docker run hello-world
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+ $ docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker Hub account:
+ https://hub.docker.com
+
+For more examples and ideas, visit:
+ https://docs.docker.com/engine/userguide/</code>
+
+Now we should be ready to pull the test environment image from the Docker Hub public repo:
+<code># docker pull jcherven/zfsproject:latest
+latest: Pulling from jcherven/zfsproject
+6bbedd9b76a4: Already exists
+fc19d60a83f1: Already exists
+de413bb911fd: Already exists
+2879a7ad3144: Already exists
+668604fde02e: Already exists
+6a9a3232045b: Pull complete
+Digest: sha256:3ea80d41b59dc51b6fe3086c9e74c84d2d4118b9f502a8b3661d245a467c6c41
+Status: Downloaded newer image for jcherven/zfsproject:latest</code>

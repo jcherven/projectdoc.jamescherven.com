@@ -1,0 +1,214 @@
+
+<h2 class="sectionedit1" id="our_lab_environment">Our Lab Environment</h2>
+<div class="level2">
+
+<p>
+<a href="https://www.virtualbox.org/wiki/Downloads" class="urlextern" title="https://www.virtualbox.org/wiki/Downloads"  rel="nofollow">Virtualbox 5.0.14</a> will be used for this lab environment. Ample host machine resources are recommended. On the higher end of real world ZFS use cases where storage pools are very large and deduplication is enabled, a storage host with 64 <abbr title="Gigabyte">GB</abbr> of RAM can be considered a resource-constrained environment.
+</p>
+
+<p>
+Our lab environment will not approach the use case described above. We would however like to create a simulacra of a nontrivially complex storage rack by populating the controller with many small virtual disks. This will allow us to take a deep dive into administering the storage system without the need for enormous computing resources; the guest VMs should only require between 2-4 <abbr title="Gigabyte">GB</abbr>. Since our goal is to demonstrate storage, backup, and recovery systems, our host system should have sufficient resources to run several of these servers as well as their disaster recovery and failover components. The base VM&#039;s specific configurations can be found in the <span class="curid"><a href="/doku.php?id=labenvironment#virtualbox_configuration" class="wikilink1" title="labenvironment">Virtualbox Configuration</a></span> section.
+</p>
+
+<p>
+This lab will be based on CentOS 7 for its host systems. This choice was made due to its binary compatibility with Red Hat Enterprise Linux, a prolific commercial distribution used in many organizations. For those who are not familiar with CentOS or RHEL, there is a lot of good, detailed help out on the web about how to get by doing things in these distributions. The setup configuration used for the CentOS 7 servers in this environment can be found in the <span class="curid"><a href="/doku.php?id=labenvironment#centos_configuration" class="wikilink1" title="labenvironment">CentOS Configuration</a></span> section.
+</p>
+
+<p>
+At the time of writing, Debian is a popular choice for ZoL due to its conservative approach to updating packages. While ZoL is considered mature, it is a LKM highly dependent on many things in the kernel. Hasty kernel updates can break the module in unpredictable ways, so Debian&#039;s stable branch obviates this risk considerably.
+</p>
+
+<p>
+Interestingly, it was recently announced that an upcoming LTS version of Ubuntu (16.04) will <a href="http://blog.dustinkirkland.com/2016/02/zfs-is-fs-for-containers-in-ubuntu-1604.html" class="urlextern" title="http://blog.dustinkirkland.com/2016/02/zfs-is-fs-for-containers-in-ubuntu-1604.html"  rel="nofollow">ship with the kernel modules</a>, requiring us to simply enable it to start using it. There is a bit to be made clear about the <a href="https://sfconservancy.org/blog/2016/feb/25/zfs-and-linux/" class="urlextern" title="https://sfconservancy.org/blog/2016/feb/25/zfs-and-linux/"  rel="nofollow">licensing implications</a>, but the potential to mainstream ZFS is quite exciting for storage administrators in many organizations who are unable to move to a ZFS supported BSD or take on the challenge of adding ZoL to their existing infrastructure.
+</p>
+
+<p>
+For the moment, we will be looking at getting these systems working in CentOS. Many of the details in using ZFS will not be materially different between Linux flavors for administrators, but installing ZoL will differ slightly.
+</p>
+
+</div>
+<!-- EDIT1 SECTION "Our Lab Environment" [1-2824] -->
+<h3 class="sectionedit2" id="virtualbox_environment">Virtualbox Environment</h3>
+<div class="level3">
+
+<p>
+<img src="/lib/images/smileys/fixme.gif" class="icon" alt="FIXME" />
+</p>
+
+<p>
+Create a new VM with the latest CentOS 7 NetInstall ISO loaded in the optical disc drive. To install the base CentOS system unattended and deterministically, we will use a precongifured kickstart file (which can be reviewed in <a href="https://gist.github.com/jcherven/13d5b725cd5163172a08e2ef86cdfafd" class="urlextern" title="https://gist.github.com/jcherven/13d5b725cd5163172a08e2ef86cdfafd"  rel="nofollow">this Github Gist</a>). Then we will use a post-installation script to install ZFS.
+</p>
+
+<p>
+At the installation media&#039;s bootloader screen, press the tab key enter customized boot options. Clear everything after the initrd image and use the ks argument to specify the provided kickstart file. Your command should appear as: 
+</p>
+<pre class="code"> &gt; vmlinuz initrd=initrd.img ks=https://projectdoc.jamescherven.com/zfsproject.cfg </pre>
+
+</div>
+<!-- EDIT2 SECTION "Virtualbox Environment" [2825-3572] -->
+<h3 class="sectionedit3" id="virtualbox_configuration">Virtualbox Configuration</h3>
+<div class="level3">
+
+<p>
+This section will provide specific configuration information that will be used for the Virtualbox VM guests used in this document. Currently this document assumes running Virtualbox on a Windows host machine, but commands and scripts for Linux or <abbr title="Operating System">OS</abbr> X hosts may be included in the future.
+</p>
+
+<p>
+Windows CMD commands will be provided so that the reader can easily follow and verify what is being described. Scripts will be provided separately for replicating the test environment on your own.
+</p>
+
+</div>
+
+<h4 id="vm_configuration">VM configuration</h4>
+<div class="level4">
+
+<p>
+A CentOS 7 base VM will be created, from which clone VMs are spawned for use in the lab. This allows us to quickly create and destroy machines for testing and committing various configurations. The base VM can be created in the Virtualbox <abbr title="Graphical User Interface">GUI</abbr> with the following properties:
+</p>
+<ul>
+<li class="level1"><div class="li"> Name: CentOS7Box00</div>
+</li>
+<li class="level1"><div class="li"> Type: Linux</div>
+</li>
+<li class="level1"><div class="li"> Version: Red Hat (64-bit)</div>
+</li>
+<li class="level1"><div class="li"> Memory Size: 2048 <abbr title="Megabyte">MB</abbr></div>
+</li>
+<li class="level1 node"><div class="li"> Create new virtual hard disk:</div>
+<ul>
+<li class="level2"><div class="li"> &lt;hostname&gt;.vdi</div>
+</li>
+<li class="level2"><div class="li"> Size: 12 <abbr title="Gigabyte">GB</abbr></div>
+</li>
+<li class="level2"><div class="li"> Format: .vdi</div>
+</li>
+<li class="level2"><div class="li"> Variant: Standard (Dynamically allocated storage on physical disk)</div>
+</li>
+</ul>
+</li>
+</ul>
+
+<p>
+The Windows CMD shell commands, which you might find useful for replicating or scripting this configuration, are as follows.
+</p>
+<hr />
+
+</div>
+
+<h5 id="note">Note</h5>
+<div class="level5">
+<blockquote><div class="no">
+ Use the vboxmanage command without being in the executable directory by adding the executable&#039;s directory to the PATH variable: <br/>
+ <pre class="code"> &gt; PATH=%PATH%;C:\Program Files\Oracle\Virtualbox</pre>
+</div></blockquote>
+<hr />
+<pre class="code">&gt; vboxmanage createvm --name &quot;CentOS7Box00&quot; --register
+&gt; vboxmanage createhd --filename &quot;CentOS7Box00&quot; --size 12000 --format vdi --variant standard</pre>
+
+<p>
+This will create the VM XML definition file and register it in Virtualbox. The second command creates the root disk drive.
+</p>
+<pre class="code">&gt; vboxmanage storagectl &quot;CentOS7Box00&quot; --name SATA --add sata --controller IntelAHCI
+&gt; vobxmanage storageattach &quot;CentOS7Box00&quot; --storagectl &quot;SATA&quot; --port 0 --device 0 --type hdd ^
+--medium CentOS7Box00.vdi</pre>
+
+<p>
+This creates a SATA controller on the VM, then attaches our root disk drive to it. The carat (^) at the end of line is the CMD shell&#039;s line continuation character. Omit where necessary.
+</p>
+<pre class="code">&gt; vboxmanage storagectl &quot;CentOS7Box00&quot; --name &quot;IDE&quot; --add ide
+&gt; vboxmanage storageattach &quot;CenOS7Box00&quot; --storagectl &quot;IDE&quot; --port 0 --device 0 --type dvddrive ^
+--medium &quot;path/to/centOS 7 minimal.iso&quot;</pre>
+
+<p>
+This creates an IDE controller for our installation media. Point the second command at your downloaded ISO image of the CentOS 7 Minimal installation media.
+</p>
+
+</div>
+
+<h4 id="virtual_storage">Virtual Storage</h4>
+<div class="level4">
+
+<p>
+In order to keep the test configurations simple, the virtual storage devices will be attached to the same SATA controller as the root media. In Virtualbox, there are some performance differences between SATA and SAS in certain situations, none of which are relevant to our environment. We will arbitrarily choose SATA for our devices.
+</p>
+
+<p>
+The production storage VM will have nine drives in the storage array each at 200GB, an arbitrarily chosen size. This disk size can be adjusted depending on your own host machine&#039;s environment. The VM was created with the root device on the SATA controller&#039;s port 0, and we will populate the nine disks in the remaining ports.
+</p>
+
+<p>
+The following CMD batch script describes the process.
+</p>
+<pre class="code">@echo off
+setlocal enableDelayedExpansion
+PATH=%PATH%;C:\Program Files\Oracle\Virtualbox
+
+FOR /l %%I IN (1,1,9) DO (
+    vboxmanage createhd --filename disk%%I --format vdi --size 20000 --variant standard
+    vboxmanage storageattach DiskAttachTest --storagectl &quot;SATA&quot; --port %%I --device 0 --type hdd --medium &quot;path\to\virtual\disks\disk%%I.vdi&quot;
+    )</pre>
+
+<p>
+Starting this virtual machine should immediately boot from your CentOS Minimal installation media.
+</p>
+
+</div>
+<!-- EDIT3 SECTION "Virtualbox Configuration" [3573-7284] -->
+<h3 class="sectionedit4" id="centos_configuration">CentOS Configuration</h3>
+<div class="level3">
+
+<p>
+CentOS should be either installed or configured from minimal installation with a static IP address and a hostname of your choosing. This will vary based on your individual test environment. For example, one might have the VM host running on an office network with the guest VMs configured for bridged networking in order to have SSH access to them from other PCs or laptops on the network. In this case, the guest VM has a static <abbr title="Local Area Network">LAN</abbr> IP address, pointing at the <abbr title="Local Area Network">LAN</abbr> gateway for internet access and <abbr title="Domain Name System">DNS</abbr>. Another situation may have you running your VM host on a desktop PC with direct console access via Virtualbox <abbr title="Graphical User Interface">GUI</abbr>. This level of configuration is inconsequential as long as you can access your machines.
+</p>
+
+<p>
+It&#039;s highly recommended to take machine snapshots after installation and network configuration, before the installation of ZFS to spare yourself time spent troubleshooting if things don&#039;t work out. Once you have this snapshot, make a full (as opposed to linked) clone of this base VM to use in the test environment, reinitializing the MAC address of the network interface:
+</p>
+<pre class="code">&gt; vboxmanage clonevm CentOS7Box00 --register</pre>
+
+<p>
+Change the hostname of this machine to fit a scheme of your choosing, assign it a static IP address, and run a <em>yum -y update &amp;&amp; yum -y upgrade</em> to get the system as up to date as possible. Add a non-root administrative user to the system and add them to the wheel group. Configure SSH to your liking (you may have to start/enable sshd with sysctl), and add any other environment configurations per your preferences. Take another full VM snapshot and we will move on to installing ZFS.  
+</p>
+
+</div>
+<!-- EDIT4 SECTION "CentOS Configuration" [7285-8948] -->
+<h3 class="sectionedit5" id="installing_zfs">Installing ZFS</h3>
+<div class="level3">
+
+<p>
+The ZFS on Linux DKMS packages are installed from the Extra Packages for Enterprise Linux (EPEL) repositories and are currently not included in CentOS. These repositories track the latest official release for CentOS 6 and 7 on x86_64 architectures. We simply need to download the rpm and run a <em>rpm -ivh</em> on it. Since wget is not on our minimum installation (unless you added it in the above section), the best way to do this with <em>yum localinstall</em>.
+</p>
+<pre class="code"># yum localinstall -y --nogpgcheck https://download.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm
+# yum localinstall -y --nogpgcheck http://archive.zfsonlinux.org/epel/zfs-release.el7.noarch.rpm</pre>
+
+<p>
+On the CentOS 7.2.1511 installation with which the author initially developed this documentation, GCC needed to be explicitly installed even if the yum install group “Development Tools” was included in the installation or installed after the fact. Run:
+</p>
+<pre class="code"># yum -y install gcc</pre>
+
+<p>
+Installing kernel-devel and the zfs package will complete the installation.
+</p>
+<pre class="code"># yum -y install kernel-devel zfs</pre>
+
+<p>
+Reboot the machine and check that the ZFS module is present:
+</p>
+<pre class="code"># lsmod | grep zfs</pre>
+
+<p>
+If you can grep lsmod results that look similar to those below, ZFS is running and ready to begin service:
+</p>
+<pre class="code">zfs                  2785315  3
+zunicode              331170  1 zfs
+zavl                   15236  1 zfs
+zcommon                55411  1 zfs
+znvpair                89086  2 zfs,zcommon
+spl                    92029  3 zfs,zcommon,znvpair</pre>
+
+<p>
+<em> ⇒ Continue reading: <a href="/doku.php?id=principlesofzfs" class="wikilink1" title="principlesofzfs">Principles of ZFS</a> ⇒</em>
+</p>
+
+</div>
+<!-- EDIT5 SECTION "Installing ZFS" [8949-] -->

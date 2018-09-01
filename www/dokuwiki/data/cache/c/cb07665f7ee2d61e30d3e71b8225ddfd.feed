@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- generator="FeedCreator 1.7.2-ppt DokuWiki" -->
+<?xml-stylesheet href="http://jamescherven.com/lib/exe/css.php?s=feed" type="text/css"?>
+<rdf:RDF
+    xmlns="http://purl.org/rss/1.0/"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+    xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <channel rdf:about="http://jamescherven.com/feed.php">
+        <title>Storage, Backup, &amp; Recovery with ZFS on Linux zfsstorageconfigurations</title>
+        <description></description>
+        <link>http://jamescherven.com/</link>
+        <image rdf:resource="http://jamescherven.com/lib/tpl/codowik-master/images/favicon.ico" />
+       <dc:date>2016-09-10T03:31:03-04:00</dc:date>
+        <items>
+            <rdf:Seq>
+                <rdf:li rdf:resource="http://jamescherven.com/doku.php?id=zfsstorageconfigurations:mirrors&amp;rev=1460566733&amp;do=diff"/>
+                <rdf:li rdf:resource="http://jamescherven.com/doku.php?id=zfsstorageconfigurations:raid-z_configurations&amp;rev=1460552127&amp;do=diff"/>
+                <rdf:li rdf:resource="http://jamescherven.com/doku.php?id=zfsstorageconfigurations:scratchdisks&amp;rev=1472090863&amp;do=diff"/>
+            </rdf:Seq>
+        </items>
+    </channel>
+    <image rdf:about="http://jamescherven.com/lib/tpl/codowik-master/images/favicon.ico">
+        <title>Storage, Backup, &amp; Recovery with ZFS on Linux</title>
+        <link>http://jamescherven.com/</link>
+        <url>http://jamescherven.com/lib/tpl/codowik-master/images/favicon.ico</url>
+    </image>
+    <item rdf:about="http://jamescherven.com/doku.php?id=zfsstorageconfigurations:mirrors&amp;rev=1460566733&amp;do=diff">
+        <dc:format>text/html</dc:format>
+        <dc:date>2016-04-13T12:58:53-04:00</dc:date>
+        <title>zfsstorageconfigurations:mirrors</title>
+        <link>http://jamescherven.com/doku.php?id=zfsstorageconfigurations:mirrors&amp;rev=1460566733&amp;do=diff</link>
+        <description>Database Storage with Mirrors
+
+A fully redundant type of pool is the mirror, in which each VDEV in the pool has an exact copy running. Another way to think of this is that each VDEV has one or more copies of itself in the pool. Mirrors have excellent read performance since different parts of the same data can be read from all VDEVS with the requested data, however write performance is not as stellar. This is because the write operation is finished when the slowest device of all mirrored VDEVS ha…</description>
+    </item>
+    <item rdf:about="http://jamescherven.com/doku.php?id=zfsstorageconfigurations:raid-z_configurations&amp;rev=1460552127&amp;do=diff">
+        <dc:format>text/html</dc:format>
+        <dc:date>2016-04-13T08:55:27-04:00</dc:date>
+        <title>zfsstorageconfigurations:raid-z_configurations</title>
+        <link>http://jamescherven.com/doku.php?id=zfsstorageconfigurations:raid-z_configurations&amp;rev=1460552127&amp;do=diff</link>
+        <description>RAID-Z Configurations</description>
+    </item>
+    <item rdf:about="http://jamescherven.com/doku.php?id=zfsstorageconfigurations:scratchdisks&amp;rev=1472090863&amp;do=diff">
+        <dc:format>text/html</dc:format>
+        <dc:date>2016-08-24T22:07:43-04:00</dc:date>
+        <title>zfsstorageconfigurations:scratchdisks</title>
+        <link>http://jamescherven.com/doku.php?id=zfsstorageconfigurations:scratchdisks&amp;rev=1472090863&amp;do=diff</link>
+        <description>Scratch Disks with ZFS Stripe
+
+One common use case for large network storage spaces are scratch disks for scientific and engineering calculations, for video editing, or other applications where large temporary storage spaces are needed. In these cases, redundancy is not important as the data has no long-term purpose; for these applications we are interested in the excellent read/write performance of ZFS striped arrays. With fast storage controllers and network interfaces, proper configuration ca…</description>
+    </item>
+</rdf:RDF>

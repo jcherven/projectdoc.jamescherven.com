@@ -1,0 +1,82 @@
+===== Principles of ZFS =====
+
+From the zfs(8) manual page:
+
+> The  zfs command configures ZFS datasets within a ZFS storage pool, as described in zpool(8). A dataset is identified by a unique path within the ZFS namespace.
+
+It continues:
+
+> A  ZFS  storage  pool  is  a logical collection of devices that provide space for datasets. A storage pool is also the root of the ZFS file system hierarchy. The root of the pool can be accessed as a file system, such as mounting and unmounting,  taking  snapshots,  and  setting  properties. The physical storage characteristics, however, are managed by the zpool(8) command.
+
+ZFS is very simple from the command usage standpoint, which is something quite admirable considering how powerful it can be. There are only two commands with which a ZFS is directly interacted: zfs(8), which helps you manage datasets, and zpool(8), which helps you manage the logical and physical organization of storage pools. Both of these have numerous subcommands that specify operations and settings.
+
+Beneath these simple, straightforward commands is a lot of complex and and sophisticated machinery. Administering ZFS feels a lot less complex than it actually is, which is something to be thankful for. However, it's essential to understand the background mechanisms so that the most can be made of its strengths while avoiding its weaknesses. As with other powerful tools, the ability to easily do great amounts of work comes with the ability to do foolish or destructive things.
+
+==== Disk Handling ====
+
+One of the dogged characteristics of attached storage in Linux is the ordering of block devices. While the system makes valiant attempts to order its devices properly between boots, it's not always the case they're in the same order as the last boot. For example, sometimes ///dev/sdp// is not the sixteenth disk in your rack. ZFS knows this so will report the disk's serial number when you ask how your array is doing instead of telling you that /dev/sdp has a problem. This means it's your responsibility to know what serial number is physically located where on your rack, and preparing your disks with GPT labels on initial installation is the best way to achieve this. The naming scheme is up to you, but something that indicates their physical location on the rack will help quite a lot.
+
+GPT labels reside in the partition metadata which inevitably involves our storage device in some low level partitioning. ZFS has the ability to handle raw disks on some systems. ZoL will deal with raw disks, which reduces the system complexity and in some specific cases perform a little better than on partitioned disks. But the marginal performance benefits this may bring do not justify the long term problems you can introduce. One of the disadvantages of raw disks in ZFS were were described above, but there is one more major issue that has to do with the dishonest nature of how hard disks report their actual capacity.
+
+When replacing a failed disk in a ZFS array, the disk must be the same size or larger. This would be easy if every 4 TB disk had exactly 4,000,000MB in physical sectors, but there can be a variance in a few megabytes over or under depending on the make of the disk since vendors use different geometry and math in building their products. It's entirely possible to replace one 4 TB disk with another 4 TB disk and find that it does not resilver because it is a few sectors short. There are even more daunting cases where an older disk with 512-byte sectors is being replaced with a newer disk with 4K sectors, which in some cases will report being adequately large while in reality, due to the differences in the calculations used between the two sector sizes, may actually be a little smaller.
+
+Partitioning disks is a good practice to get around these issues. Partitioning also allows you to boot from a disk, for which you may find a use case. Most importantly, however, partitioning disks for ZFS can provide some free play space at the end of the disk for handling the size discrepancies discussed above. When a 4 TB disk with a 3.9TB primary partition and a 0.1TB swap partition fails down the road, another 4TB disk from a different vendor that is similarly partitioned can be confidently swapped, as parted(8) will align your storage space so that the new matches the old.
+
+==== Additional Considerations ====
+There are more considerations we should mind while handling disks in ZFS. As with traditional partitions with other filesystems, there are cases and workloads where sector size and the partition alignment can improve or degrade read and write performance in the array.
+
+Partition alignment matters in ZFS, but it's easier to deal with than without ZFS. Without ZFS, it was often recommended to find the optimal partition alignment by discovering the individual disk's optimal I/O size and dividing it by the disk's physical block size. For large arrays, making this manageable meant having to very strictly match the disks used and severely limited options when replacing failed devices. ZFS supports mixed disks because it's expected that disk geometry differs between vendors and device types, and because it's expected that they will continue to change in the future.  Some current 4K sector disks will report having 512 byte sectors. ZFS doesn't assume that disks lie about their sector size, so we have to pay attention to it ourselves.
+
+Partitioning a disk with 4K sectors when you and parted(8) expect 512 byte sectors presents a performance penalty because the boundaries of the partition will span a 4K sector. This means that a significant number of writes on the disk that would otherwise be a single 512 byte write will be two writes spanning sides of a 4K boundary, degrading performance considerably. There are other disks which expect the partition boundaries to be aligned to other values as well. The best way to deal with the vast majority of these cases is to align the partitioning of each disk along 1 MB boundaries or by a percentage of the disk. Parted(8) in CentOS allows us to do this.
+
+ZFS's sector size is determined in a zpool property variable called //ashift//, and naturally we want this variable to align with our physical and logical partition alignments. The ashift value is the exponent of two that corresponds to your sector size: in other words, ashift=9 will set ZFS for 512K sectors since that is expressed as 2^9. Ashift=12 translates to 4096, suitable for 4K sectors.
+
+An ashift value of 12 is suitable for most cases, including our lab case. This isn't absolutely optimal for datasets where there are many tiny files smaller than 4K since any write smaller than 4K will not utilize the entire sector. This is only a performance-driven factor if most files in the dataset are smaller than 4K. In most other datasets the storage loss is not significant, but you are encouraged to optimize to your own satisfaction. This document will instruct setting ashift=12 since it covers a large general region of use cases.
+
+==== Labeling & Partitioning Disks ====
+
+Let's label and partition our disks using parted in CentOS. Before proceeding you should already have [[labenvironment#virtualbox_configuration|attached disks to your VM]]. In this VM, we are using 20GB virtual disks which we will partition with a 19GB primary GPT partition with the remainder of the disk as Linux Swap space. They are attached on /dev/sdb through /dev/sdm.
+
+  - Launch parted(8) with the //--align optimal// flag & parameter to assure that our partition aligns to physical sectors: <code># parted --align optimal /dev/sdd </code>
+  - Parted will display the physical sector size and the logical sector size with the //print// command. <code>(parted) print
+Error: /dev/sdd: unrecognised disk label
+Model: VBOX HARDDISK (scsi)
+Disk /dev/sdd: 21.5GB
+Sector size (logical/physical): 512B/512B
+Partition Table: unknown
+Disk Flags:</code> ...and we can see that our disk has 512B physical and logical sectors. We'll also notice that, as expected, this disk does not have a partition table.
+  - Add a GPT label with the command //mklabel//: <code>(parted) mklabel gpt
+(parted) print
+Model: VBOX HARDDISK (scsi)
+Disk /dev/sdd: 21.5GB
+Sector size (logical/physical): 512B/512B
+Partition Table: gpt
+Disk Flags:
+
+Number  Start  End  Size  File system  Name  Flags
+</code> ...//print//ing the disk info confirms that this disk is ready to partition.
+  - We need to ensure that the partition boundaries start and end on 1MB increments. In parted(8), using "optimal" alignment (as determined by parted) will ensure that if you start your partition at 0 percent, the first partition boundary will align with the first megabyte. Create a 19GB primary partition named zfs0 and the remainder swap partition:<code>(parted) mkpart zfs0 0% 19000MB
+(parted) mkpart linux-swap 19000MB 100%
+(parted) print
+Model: VBOX HARDDISK (scsi)
+Disk /dev/sdd: 21.5GB
+Sector size (logical/physical): 512B/512B
+Partition Table: gpt
+Disk Flags:
+
+Number  Start   End     Size    File system  Name        Flags
+ 1      1049kB  19.0GB  19.0GB               primary
+ 2      19.0GB  21.5GB  2474MB               linux-swap
+</code>
+  - We should verify that this is how parted sees the alignment on physical sectors on the disk with the //align-check// command: <code>(parted) align-check
+alignment type(min/opt)  [optimal]/minimal?
+Partition number? 1
+1 aligned
+</code> ...if so, parted returns //X aligned// where X is the partition number.
+  - Remember that we used percentages to specify start and end points. Can we verify that the swap partition ends on the last full megabyte if we specify 100%? This is the documented behavior for parted, but let's check for our own satisfaction. <code>(parted) align-check optimal 2
+2 aligned</code> ...parted verifies that this is indeed the case. We'll need to do this for each disk. The following is a scriptable command where the $DEVLETTER is the block device and $ZFSNUM is the partition name. <code># parted --script --align optimal /dev/$DEVLETTER \
+mklabel gpt \
+mkpart $ZFSNUM 0% 19000MB \
+mkpart linux-swap 19000MB 100%</code>
+
+// => Continue reading: [[zfsstorageconfigurations|ZFS Storage Configurations]] =>//
